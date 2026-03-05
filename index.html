@@ -599,11 +599,6 @@
 
             <div class="feedback" id="flashcardFeedback"></div>
 
-            <div class="flashcard" id="flashcard" onclick="toggleFlashcard()">
-                <div class="flashcard-text" id="flashcardText">Tap to reveal spelling</div>
-                <div class="flipper">Tap to see answer</div>
-            </div>
-
             <div class="game-buttons">
                 <button class="btn-secondary" onclick="previousCard()">&#8592; Previous</button>
                 <button class="btn-secondary" onclick="nextCard()">Next &#8594;</button>
@@ -629,7 +624,6 @@
 
         let currentGame = null;
         let currentIndex = 0;
-        let cardFlipped = false;
         let cardChecked = false;
         let flashcardScore = { correct: 0, incorrect: 0 };
         let mcScore = { correct: 0, incorrect: 0 };
@@ -648,7 +642,6 @@
         function startGame(game) {
             currentGame = game;
             currentIndex = 0;
-            cardFlipped = false;
 
             document.getElementById('mainMenu').style.display = 'none';
             document.getElementById('statsDiv').style.display = 'none';
@@ -688,11 +681,7 @@
         }
 
         function showFlashcard() {
-            cardFlipped = false;
             cardChecked = false;
-            const card = document.getElementById('flashcard');
-            card.classList.remove('flipped');
-            document.getElementById('flashcardText').textContent = 'Tap to reveal spelling';
 
             document.getElementById('flashcardProgress').textContent = currentIndex + 1;
             document.getElementById('flashcardProgressBar').style.width = ((currentIndex + 1) / words.length * 100) + '%';
@@ -703,15 +692,7 @@
             speakWord();
         }
 
-        function toggleFlashcard() {
-            const card = document.getElementById('flashcard');
-            const text = document.getElementById('flashcardText');
-            cardFlipped = !cardFlipped;
-            card.classList.toggle('flipped', cardFlipped);
-            text.textContent = cardFlipped ? words[currentIndex] : 'Tap to reveal spelling';
-        }
-
-        function handleFlashcardKeypress(event) {
+function handleFlashcardKeypress(event) {
             if (event.key === 'Enter') checkFlashcardSpelling();
         }
 
