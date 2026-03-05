@@ -330,6 +330,190 @@
             display: none;
         }
 
+        /* Mobile Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 20px;
+                border-radius: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+                margin-bottom: 8px;
+            }
+
+            .subtitle {
+                font-size: 1em;
+                margin-bottom: 20px;
+            }
+
+            button {
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+
+            .word-big {
+                font-size: 2em;
+                letter-spacing: 2px;
+                margin-bottom: 10px;
+            }
+
+            .word-small {
+                font-size: 0.95em;
+            }
+
+            .word-display {
+                padding: 20px;
+                margin-bottom: 15px;
+            }
+
+            .input-area {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            input[type="text"] {
+                padding: 12px;
+                font-size: 1em;
+            }
+
+            .audio-btn {
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+
+            .game-buttons {
+                gap: 8px;
+                margin-top: 15px;
+            }
+
+            .game-buttons button {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+
+            .flashcard {
+                padding: 30px 20px;
+                min-height: 200px;
+                margin-bottom: 15px;
+            }
+
+            .flashcard-text {
+                font-size: 1.8em;
+            }
+
+            .flipper {
+                font-size: 0.8em;
+                margin-top: 15px;
+            }
+
+            .progress {
+                font-size: 0.95em;
+                margin-bottom: 10px;
+            }
+
+            .feedback {
+                font-size: 1.2em;
+                padding: 15px;
+            }
+
+            #optionsContainer {
+                gap: 10px !important;
+            }
+
+            #option0, #option1, #option2 {
+                padding: 15px !important;
+                font-size: 1em !important;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .back-btn {
+                padding: 12px;
+                font-size: 1em;
+                margin-top: 15px;
+            }
+
+            #globalScore {
+                font-size: 1.5em !important;
+                padding: 15px !important;
+                margin-bottom: 15px !important;
+            }
+
+            .keyboard {
+                grid-template-columns: repeat(auto-fit, minmax(30px, 1fr));
+                gap: 4px;
+            }
+
+            .key {
+                padding: 6px;
+                font-size: 0.85em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+                margin-bottom: 5px;
+            }
+
+            button {
+                padding: 10px 15px;
+                font-size: 0.9em;
+                letter-spacing: 0.5px;
+            }
+
+            .word-big {
+                font-size: 1.6em;
+                letter-spacing: 1px;
+            }
+
+            .word-display {
+                padding: 15px;
+            }
+
+            .progress {
+                font-size: 0.9em;
+            }
+
+            .menu-buttons {
+                gap: 10px;
+            }
+
+            .feedback {
+                font-size: 1em;
+                padding: 12px;
+            }
+
+            #option0, #option1, #option2 {
+                padding: 12px !important;
+                font-size: 0.95em !important;
+            }
+
+            .flashcard {
+                padding: 20px 15px;
+                min-height: 150px;
+            }
+
+            .flashcard-text {
+                font-size: 1.4em;
+            }
+        }
+
         .emoji-rain {
             position: fixed;
             width: 100%;
@@ -351,9 +535,6 @@
                 opacity: 0;
             }
         }
-    </style>
-</head>
-<body>
     <div class="emoji-rain" id="emojiRain"></div>
 
     <div class="container">
