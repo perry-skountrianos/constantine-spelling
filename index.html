@@ -630,6 +630,7 @@
         let currentGame = null;
         let currentIndex = 0;
         let cardFlipped = false;
+        let cardChecked = false;
         let flashcardScore = { correct: 0, incorrect: 0 };
         let mcScore = { correct: 0, incorrect: 0 };
         let mcOptions = [];
@@ -688,6 +689,7 @@
 
         function showFlashcard() {
             cardFlipped = false;
+            cardChecked = false;
             const card = document.getElementById('flashcard');
             card.classList.remove('flipped');
             document.getElementById('flashcardText').textContent = 'Tap to reveal spelling';
@@ -714,6 +716,7 @@
         }
 
         function checkFlashcardSpelling() {
+            if (cardChecked) return;
             const input = document.getElementById('flashcardInput').value.toLowerCase().trim();
             const correct = words[currentIndex].toLowerCase();
             const feedback = document.getElementById('flashcardFeedback');
@@ -721,7 +724,12 @@
             if (input === '') {
                 feedback.className = 'feedback error';
                 feedback.textContent = '⚠️ Type the word first!';
-            } else if (input === correct) {
+                feedback.style.display = 'block';
+                return;
+            }
+
+            cardChecked = true;
+            if (input === correct) {
                 flashcardScore.correct++;
                 feedback.className = 'feedback success';
                 feedback.textContent = '⚽ GOAL! Perfect spelling!';
