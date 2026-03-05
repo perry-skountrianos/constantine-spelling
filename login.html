@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Constantine Spelling - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,8 +15,12 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: #000000;
+            font-family: 'Nunito', sans-serif;
+            background: #064e3b;
+            background-image:
+                radial-gradient(ellipse at 50% 0%, rgba(34,197,94,0.15) 0%, transparent 60%),
+                repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(255,255,255,0.03) 79px, rgba(255,255,255,0.03) 80px),
+                repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(255,255,255,0.03) 79px, rgba(255,255,255,0.03) 80px);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -23,107 +30,131 @@
 
         .login-container {
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5), 0 0 0 2px rgba(22,163,74,0.3);
             max-width: 400px;
             width: 100%;
-            padding: 40px;
+            padding: 40px 36px;
             text-align: center;
         }
 
-        h1 {
-            color: #000000;
-            margin-bottom: 10px;
-            font-size: 2em;
-        }
-
         .logo {
-            font-size: 3em;
-            margin-bottom: 20px;
+            font-size: 4em;
+            margin-bottom: 12px;
+            display: block;
+            animation: bounce 1.5s ease infinite;
         }
 
-        p {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 1.1em;
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-12px) rotate(5deg); }
+        }
+
+        h1 {
+            font-family: 'Bangers', cursive;
+            color: #14532d;
+            margin-bottom: 6px;
+            font-size: 2.4em;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.08);
+        }
+
+        .tagline {
+            color: #6b7280;
+            margin-bottom: 28px;
+            font-size: 1em;
+            font-weight: 600;
         }
 
         input[type="password"] {
             width: 100%;
-            padding: 15px;
-            font-size: 1.2em;
-            border: 2px solid #ccc;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-family: 'Arial', sans-serif;
-            letter-spacing: 2px;
+            padding: 14px 18px;
+            font-size: 1.1em;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            letter-spacing: 3px;
+            transition: all 0.2s;
+            color: #14532d;
         }
 
         input[type="password"]:focus {
             outline: none;
-            border-color: #000000;
-            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+            border-color: #16a34a;
+            box-shadow: 0 0 0 4px rgba(22,163,74,0.15);
         }
 
         button {
             width: 100%;
             padding: 15px;
             font-size: 1.1em;
-            background: #000000;
+            background: linear-gradient(135deg, #16a34a 0%, #065f46 100%);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
+            font-weight: 800;
+            font-family: 'Nunito', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(22,163,74,0.4), 0 2px 4px rgba(0,0,0,0.2);
         }
 
         button:hover {
-            background: #333333;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(22,163,74,0.5), 0 4px 8px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        }
+
+        button:active {
+            transform: translateY(0);
         }
 
         .error {
-            color: #d32f2f;
-            margin-top: 15px;
+            color: #dc2626;
+            margin-top: 14px;
             display: none;
-            font-weight: bold;
+            font-weight: 800;
+            background: #fef2f2;
+            border: 2px solid #fca5a5;
+            border-radius: 10px;
+            padding: 10px;
         }
 
         .info {
-            color: #666;
-            font-size: 0.9em;
-            margin-top: 20px;
+            color: #9ca3af;
+            font-size: 0.8em;
+            margin-top: 16px;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <div class="logo">⚽</div>
+        <span class="logo">⚽</span>
         <h1>Constantine Spelling</h1>
-        <p>Enter password to begin</p>
-        
-        <input type="password" id="passwordInput" placeholder="Enter password" onkeypress="handleKeyPress(event)">
-        <button onclick="checkPassword()">Access Game</button>
-        
-        <div class="error" id="errorMessage">❌ Incorrect password. Try again.</div>
+        <p class="tagline">Enter your password to kick off!</p>
+
+        <input type="password" id="passwordInput" placeholder="Password" onkeypress="handleKeyPress(event)">
+        <button onclick="checkPassword()">⚽ Kick Off!</button>
+
+        <div class="error" id="errorMessage">❌ Wrong password. Try again!</div>
         <div class="info">Password is case-sensitive</div>
     </div>
 
     <script>
-        // Configuration - Change this password!
         const CORRECT_PASSWORD = 'spelling123';
         const GAME_FILE = 'index.html';
 
         function checkPassword() {
             const input = document.getElementById('passwordInput').value;
             const errorMsg = document.getElementById('errorMessage');
-            
+
             if (input === CORRECT_PASSWORD) {
-                // Store authentication in sessionStorage (clears when browser closes)
                 sessionStorage.setItem('authenticated', 'true');
-                // Redirect to game
                 window.location.href = GAME_FILE;
             } else {
                 errorMsg.style.display = 'block';
@@ -133,12 +164,9 @@
         }
 
         function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                checkPassword();
-            }
+            if (event.key === 'Enter') checkPassword();
         }
 
-        // Focus on password input on page load
         window.onload = () => {
             document.getElementById('passwordInput').focus();
         };
