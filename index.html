@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soccer Spelling Challenge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #000000;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            text-shadow: none;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 15px 25px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #000000;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .game-area {
+            display: none;
+        }
+
+        .game-area.active {
+            display: block;
+        }
+
+        .word-display {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 3px solid #667eea;
+        }
+
+        .word-big {
+            font-size: 3em;
+            color: #000000;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+            font-weight: bold;
+        }
+
+        .word-small {
+            color: #999;
+            margin-bottom: 15px;
+        }
+
+        .progress {
+            text-align: center;
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            background: #000000;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 15px;
+            font-size: 1.2em;
+            border: 3px solid #ddd;
+            border-radius: 10px;
+            font-family: 'Arial', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #000000;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .audio-btn {
+            background: #000000;
+            color: #ffffff;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .audio-btn:hover {
+            background: #333333;
+        }
+
+        .game-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .game-buttons button {
+            flex: 1;
+            padding: 12px;
+        }
+
+        .feedback {
+            text-align: center;
+            font-size: 1.5em;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: bold;
+        }
+
+        .feedback.success {
+            display: block;
+            background: #f0f0f0;
+            color: #000000;
+            border: 2px solid #000000;
+        }
+
+        .feedback.error {
+            display: block;
+            background: #f0f0f0;
+            color: #000000;
+            border: 2px solid #000000;
+        }
+
+        .flashcard {
+            background: #000000;
+            color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 20px;
+            border: 3px solid #000000;
+        }
+
+        .flashcard:hover {
+            transform: scale(1.05);
+        }
+
+        .flashcard.flipped {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .flashcard-text {
+            font-size: 2.5em;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .flipper {
+            text-align: center;
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 20px;
+        }
+
+        .hangman-display {
+            text-align: center;
+            font-size: 2.5em;
+            letter-spacing: 10px;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .hangman-guesses {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(35px, 1fr));
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .key {
+            padding: 8px;
+            border: 2px solid #000000;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            background: white;
+            color: #000000;
+            transition: all 0.2s ease;
+        }
+
+        .key:hover:not(:disabled) {
+            background: #000000;
+            color: #ffffff;
+            transform: scale(1.1);
+        }
+
+        .key:disabled {
+            background: #ddd;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .reward {
+            text-align: center;
+            font-size: 3em;
+            margin: 20px 0;
+            animation: bounce 0.6s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .stats {
+            text-align: center;
+            color: #666;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+
+        .back-btn {
+            background: #333333;
+            color: white;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .back-btn:hover {
+            background: #1a1a1a;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .emoji-rain {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 3em;
+            animation: fall 3s linear;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="emoji-rain" id="emojiRain"></div>
+
+    <div class="container">
+    <h1>⚽ Constantine Spelling ⚽</h1>
+        <p class="subtitle">Score goals with correct spelling!</p>
+
+        <!-- Score Display -->
+        <div id="globalScore" style="background: #000000; padding: 20px; border-radius: 15px; margin-bottom: 20px; text-align: center; font-size: 1.8em; font-weight: bold; color: #ffffff;">
+            ⚽ Total Goals: <span id="totalGoals">0</span> ⚽
+        </div>
+
+        <!-- Main Menu -->
+        <div id="mainMenu">
+            <div class="menu-buttons">
+                <button class="btn-primary" onclick="startGame('flashcards')">📋 Study Cards</button>
+                <button class="btn-primary" onclick="startGame('multiplechoice')">🥅 Scoring Challenge</button>
+            </div>
+        </div>
+
+        <!-- Multiple Choice Game -->
+        <div id="multipleChoiceGame" class="game-area">
+            <div class="progress">
+                <span id="mcProgress">1</span> / <span id="mcTotal">20</span>
+                <br>
+                <span id="mcScore" style="font-size: 0.9em; color: #000000;">⚽ 0</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="mcProgressBar"></div>
+            </div>
+
+            <div class="word-display">
+                <div class="word-small">Listen and pick the correct spelling:</div>
+                <button class="audio-btn" onclick="speakWord()">🔊 Hear Word Again</button>
+            </div>
+
+            <div id="optionsContainer" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+                <button class="btn-secondary" onclick="selectOption(0)" id="option0" style="padding: 20px; font-size: 1.1em;"></button>
+                <button class="btn-secondary" onclick="selectOption(1)" id="option1" style="padding: 20px; font-size: 1.1em;"></button>
+                <button class="btn-secondary" onclick="selectOption(2)" id="option2" style="padding: 20px; font-size: 1.1em;"></button>
+            </div>
+
+            <div class="feedback" id="mcFeedback"></div>
+
+            <div class="game-buttons">
+                <button class="btn-secondary" onclick="previousMC()">← Previous</button>
+                <button class="btn-secondary" onclick="nextMC()">Next →</button>
+            </div>
+            <button class="back-btn" onclick="backToMenu()">Back to Menu</button>
+        </div>
+
+        <!-- Flashcards Game -->
+        <div id="flashcardsGame" class="game-area">
+            <div class="progress">
+                <span id="flashcardProgress">1</span> / <span id="totalWords">20</span>
+                <br>
+                <span id="flashcardScore" style="font-size: 0.9em; color: #000000;">⚽ 0</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="flashcardProgressBar"></div>
+            </div>
+            
+            <div class="word-display">
+                <div class="word-small">Listen to the word:</div>
+                <button class="audio-btn" onclick="speakWord()">🔊 Hear Word Again</button>
+            </div>
+
+            <div class="input-area">
+                <input type="text" id="flashcardInput" placeholder="Type the word here..." onkeypress="handleFlashcardKeypress(event)">
+                <button class="audio-btn" onclick="checkFlashcardSpelling()">Check ✓</button>
+            </div>
+
+            <div class="feedback" id="flashcardFeedback"></div>
+
+            <div class="flashcard" id="flashcard" onclick="toggleFlashcard()">
+                <div class="flashcard-text" id="flashcardText">Click to reveal spelling</div>
+                <div class="flipper">Click to see answer</div>
+            </div>
+
+            <div class="game-buttons">
+                <button class="btn-secondary" onclick="previousCard()">← Previous</button>
+                <button class="btn-secondary" onclick="nextCard()">Next →</button>
+            </div>
+            <button class="back-btn" onclick="backToMenu()">Back to Menu</button>
+        </div>
+
+
+
+        <div id="statsDiv" class="stats" style="display: none;">
+            <h3>⚽ You're a Spelling Champion! ⚽</h3>
+            <p>Great performance on the field!</p>
+            <p id="finalStats"></p>
+        </div>
+    </div>
+
+    <script>
+        // Words to practice
+        const words = [
+            'thistles', 'saxes', 'displays', 'genres', 'fairies',
+            'sandwiches', 'beeves', 'does', 'allies', 'ambushes',
+            'fixes', 'glasses', 'scratches', 'galleys', 'radishes',
+            'businesses', 'bookshelves', 'quizzes', 'blazes', 'backhoes'
+        ];
+
+        let currentGame = null;
+        let currentIndex = 0;
+        let cardFlipped = false;
+        let hangmanRound = 0;
+        let hangmanWrong = 0;
+        let typingScore = 0;
+        let matchingPairs = [];
+        let matchingFlipped = [];
+        let matchingMatched = [];
+        let flashcardScore = { correct: 0, incorrect: 0 };
+        let mcScore = { correct: 0, incorrect: 0 };
+        let mcOptions = [];
+        let mcCorrectIndex = 0;
+        let totalGoals = 0;
+        let bonusTriggered = false;
+
+        // Speech Synthesis
+        function speakWord(word = null) {
+            const wordToSpeak = word || words[currentIndex];
+            const utterance = new SpeechSynthesisUtterance(wordToSpeak);
+            utterance.rate = 0.8;
+            speechSynthesis.speak(utterance);
+        }
+
+        // Navigation
+        function startGame(game) {
+            currentGame = game;
+            currentIndex = 0;
+            cardFlipped = false;
+            hangmanRound = 0;
+            hangmanWrong = 0;
+            typingScore = 0;
+
+            document.getElementById('mainMenu').style.display = 'none';
+            document.getElementById('statsDiv').style.display = 'none';
+            document.querySelectorAll('.game-area').forEach(el => el.classList.remove('active'));
+
+            if (game === 'flashcards') {
+                initFlashcards();
+                document.getElementById('flashcardsGame').classList.add('active');
+            } else if (game === 'multiplechoice') {
+                initMultipleChoice();
+                document.getElementById('multipleChoiceGame').classList.add('active');
+            }
+        }
+
+        function backToMenu() {
+            currentGame = null;
+            speechSynthesis.cancel();
+            document.getElementById('mainMenu').style.display = 'block';
+            document.querySelectorAll('.game-area').forEach(el => el.classList.remove('active'));
+            document.getElementById('statsDiv').style.display = 'none';
+        }
+
+        // FLASHCARDS
+        function shuffleWords() {
+            for (let i = words.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [words[i], words[j]] = [words[j], words[i]];
+            }
+        }
+
+        function initFlashcards() {
+            currentIndex = 0;
+            cardFlipped = false;
+            flashcardScore = { correct: 0, incorrect: 0 };
+            shuffleWords();
+            showFlashcard();
+        }
+
+        function showFlashcard() {
+            const word = words[currentIndex];
+            const card = document.getElementById('flashcard');
+            const text = document.getElementById('flashcardText');
+            
+            cardFlipped = false;
+            card.classList.remove('flipped');
+            text.textContent = 'Click to reveal spelling';
+            
+            document.getElementById('flashcardProgress').textContent = currentIndex + 1;
+            const progress = ((currentIndex + 1) / words.length) * 100;
+            document.getElementById('flashcardProgressBar').style.width = progress + '%';
+            
+            document.getElementById('flashcardInput').value = '';
+            document.getElementById('flashcardInput').focus();
+            document.getElementById('flashcardFeedback').style.display = 'none';
+            
+            updateFlashcardScore();
+            
+            // Auto-play the word
+            speakWord();
+        }
+
+        function toggleFlashcard() {
+            const card = document.getElementById('flashcard');
+            const text = document.getElementById('flashcardText');
+            
+            if (!cardFlipped) {
+                card.classList.add('flipped');
+                text.textContent = words[currentIndex];
+                cardFlipped = true;
+            } else {
+                card.classList.remove('flipped');
+                text.textContent = 'Click to reveal spelling';
+                cardFlipped = false;
+            }
+        }
+
+        function handleFlashcardKeypress(event) {
+            if (event.key === 'Enter') {
+                checkFlashcardSpelling();
+            }
+        }
+
+        function checkFlashcardSpelling() {
+            const input = document.getElementById('flashcardInput').value.toLowerCase().trim();
+            const correct = words[currentIndex].toLowerCase();
+            const feedback = document.getElementById('flashcardFeedback');
+
+            if (input === correct) {
+                flashcardScore.correct++;
+                feedback.className = 'feedback success';
+                feedback.textContent = '⚽ GOAL! Perfect spelling!';
+                celebrateSuccess();
+                updateFlashcardScore();
+            } else if (input === '') {
+                feedback.className = 'feedback error';
+                feedback.textContent = '⚠️ Please type the word!';
+            } else {
+                flashcardScore.incorrect++;
+                feedback.className = 'feedback error';
+                feedback.textContent = `❌ Not quite! The correct spelling is: ${words[currentIndex]}`;
+            }
+            feedback.style.display = 'block';
+            updateFlashcardScore();
+        }
+
+        function updateFlashcardScore() {
+            document.getElementById('flashcardScore').textContent = `✓ ${flashcardScore.correct}  ✗ ${flashcardScore.incorrect}`;
+        }
+
+        function nextCard() {
+            if (currentIndex < words.length - 1) {
+                currentIndex++;
+                showFlashcard();
+            } else {
+                showStats();
+            }
+        }
+
+        function previousCard() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                showFlashcard();
+            }
+        }
+
+        // MULTIPLE CHOICE
+        function generateWrongSpellings(word) {
+            const variations = [];
+            
+            // Variation 1: Remove a vowel
+            let v1 = word.replace(/[aeiou]/i, '');
+            if (v1 !== word && v1.length > 0) variations.push(v1);
+            
+            // Variation 2: Swap two letters
+            let v2 = word.split('');
+            if (v2.length > 1) {
+                const idx1 = Math.floor(Math.random() * (v2.length - 1));
+                const idx2 = idx1 + 1;
+                [v2[idx1], v2[idx2]] = [v2[idx2], v2[idx1]];
+                v2 = v2.join('');
+                if (v2 !== word) variations.push(v2);
+            }
+            
+            // Variation 3: Change a vowel
+            const vowels = ['a', 'e', 'i', 'o', 'u'];
+            let v3 = word.split('');
+            for (let i = 0; i < v3.length; i++) {
+                if ('aeiouAEIOU'.includes(v3[i])) {
+                    const randomVowel = vowels[Math.floor(Math.random() * vowels.length)];
+                    if (randomVowel.toLowerCase() !== v3[i].toLowerCase()) {
+                        v3[i] = randomVowel;
+                        break;
+                    }
+                }
+            }
+            v3 = v3.join('');
+            if (v3 !== word && !variations.includes(v3)) variations.push(v3);
+            
+            // Ensure we have 2 variations
+            while (variations.length < 2) {
+                let random = word.split('');
+                random[Math.floor(Math.random() * random.length)] = random[Math.floor(Math.random() * random.length)];
+                random = random.join('');
+                if (random !== word && !variations.includes(random)) variations.push(random);
+            }
+            
+            return variations.slice(0, 2);
+        }
+
+        function initMultipleChoice() {
+            currentIndex = 0;
+            mcScore = { correct: 0, incorrect: 0 };
+            shuffleWords();
+            showMultipleChoice();
+        }
+
+        function showMultipleChoice() {
+            const word = words[currentIndex];
+            const wrongOptions = generateWrongSpellings(word);
+            mcOptions = [word, ...wrongOptions];
+            
+            // Shuffle options
+            for (let i = mcOptions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [mcOptions[i], mcOptions[j]] = [mcOptions[j], mcOptions[i]];
+            }
+            
+            mcCorrectIndex = mcOptions.indexOf(word);
+            
+            document.getElementById('mcProgress').textContent = currentIndex + 1;
+            document.getElementById('mcTotal').textContent = words.length;
+            const progress = ((currentIndex + 1) / words.length) * 100;
+            document.getElementById('mcProgressBar').style.width = progress + '%';
+            updateMCScore();
+            
+            // Display options
+            document.getElementById('option0').textContent = mcOptions[0];
+            document.getElementById('option1').textContent = mcOptions[1];
+            document.getElementById('option2').textContent = mcOptions[2];
+            
+            // Reset button styles
+            document.getElementById('option0').style.background = '#f0f0f0';
+            document.getElementById('option0').style.color = '#667eea';
+            document.getElementById('option1').style.background = '#f0f0f0';
+            document.getElementById('option1').style.color = '#667eea';
+            document.getElementById('option2').style.background = '#f0f0f0';
+            document.getElementById('option2').style.color = '#667eea';
+            
+            document.getElementById('mcFeedback').style.display = 'none';
+            
+            // Auto-play the word
+            speakWord();
+        }
+
+        function selectOption(index) {
+            const feedback = document.getElementById('mcFeedback');
+            const btn = document.getElementById('option' + index);
+            
+            if (index === mcCorrectIndex) {
+                mcScore.correct++;
+                feedback.className = 'feedback success';
+                feedback.textContent = '⚽ GOAL! Perfect spelling!';
+                btn.style.background = '#000000';
+                btn.style.color = '#ffffff';
+                celebrateSuccess();
+            } else {
+                mcScore.incorrect++;
+                feedback.className = 'feedback error';
+                feedback.textContent = `❌ Off target! The correct spelling is: ${words[currentIndex]}`;
+                btn.style.background = '#cccccc';
+                btn.style.color = '#000000';
+                document.getElementById('option' + mcCorrectIndex).style.background = '#000000';
+                document.getElementById('option' + mcCorrectIndex).style.color = '#ffffff';
+            }
+            feedback.style.display = 'block';
+            updateMCScore();
+            
+            // Disable all buttons
+            document.getElementById('option0').disabled = true;
+            document.getElementById('option1').disabled = true;
+            document.getElementById('option2').disabled = true;
+        }
+
+        function updateFlashcardScore() {
+            document.getElementById('flashcardScore').textContent = `⚽ ${flashcardScore.correct}`;
+            updateGlobalScore();
+        }
+
+        function updateMCScore() {
+            document.getElementById('mcScore').textContent = `⚽ ${mcScore.correct}`;
+            updateGlobalScore();
+        }
+
+        function updateGlobalScore() {
+            totalGoals = flashcardScore.correct + mcScore.correct;
+            document.getElementById('totalGoals').textContent = totalGoals;
+            
+            if (totalGoals === 10 && !bonusTriggered) {
+                bonusTriggered = true;
+                triggerBonusGame();
+            }
+        }
+
+        function nextMC() {
+            // Re-enable buttons
+            document.getElementById('option0').disabled = false;
+            document.getElementById('option1').disabled = false;
+            document.getElementById('option2').disabled = false;
+            
+            if (currentIndex < words.length - 1) {
+                currentIndex++;
+                showMultipleChoice();
+            } else {
+                showStats();
+            }
+        }
+
+        function previousMC() {
+            // Re-enable buttons
+            document.getElementById('option0').disabled = false;
+            document.getElementById('option1').disabled = false;
+            document.getElementById('option2').disabled = false;
+            
+            if (currentIndex > 0) {
+                currentIndex--;
+                showMultipleChoice();
+            }
+        }
+
+        function updateGlobalScore() {
+            totalGoals = flashcardScore.correct + mcScore.correct;
+            document.getElementById('totalGoals').textContent = totalGoals;
+            
+            if (totalGoals === 10 && !bonusTriggered) {
+                bonusTriggered = true;
+                setTimeout(triggerBonusGame, 1500);
+            }
+        }
+
+        // BONUS GAME - Triggered at 10 correct answers
+        function triggerBonusGame() {
+            // Pause any ongoing game
+            speechSynthesis.cancel();
+            document.querySelectorAll('.game-area').forEach(el => el.classList.remove('active'));
+            document.getElementById('mainMenu').style.display = 'none';
+            
+            // Show bonus screen
+            const bonusHTML = `
+                <div id="bonusGame" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000000; display: flex; justify-content: center; align-items: center; z-index: 1000; animation: slideIn 0.5s ease;">
+                    <div style="background: white; padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-width: 600px; width: 90%;">
+                        <div style="font-size: 4em; margin-bottom: 20px; animation: bounce 1s infinite;">⚽🏆⚽</div>
+                        <h2 style="color: #000000; font-size: 2.5em; margin-bottom: 20px;">SUPER GOAL!</h2>
+                        <p style="color: #333; font-size: 1.3em; margin-bottom: 30px;">You scored 10 goals! You're on fire!</p>
+                        <div id="bonusChallenge" style="background: #f0f0f0; padding: 30px; border-radius: 15px; margin-bottom: 20px; color: #000000; font-size: 1.2em;">
+                            <p style="margin-bottom: 20px;">⚡ BONUS ROUND: Speed Challenge!</p>
+                            <p>Tap the correct spelling as fast as you can!</p>
+                            <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;" id="bonusOptions"></div>
+                            <p id="bonusResult" style="margin-top: 20px; font-weight: bold; font-size: 1.3em;"></p>
+                        </div>
+                        <button onclick="closeBonusGame()" style="background: #000000; color: #ffffff; padding: 15px 30px; font-size: 1.1em; border: none; border-radius: 10px; cursor: pointer; font-weight: bold;">Keep Practicing</button>
+                    </div>
+                    <style>
+                        @keyframes slideIn {
+                            from { transform: translateY(-100vh); opacity: 0; }
+                            to { transform: translateY(0); opacity: 1; }
+                        }
+                        @keyframes bounce {
+                            0%, 100% { transform: translateY(0); }
+                            50% { transform: translateY(-20px); }
+                        }
+                    </style>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', bonusHTML);
+            playBonusRound();
+        }
+
+        function playBonusRound() {
+            const randomWord = words[Math.floor(Math.random() * words.length)];
+            const wrongOptions = generateWrongSpellings(randomWord);
+            const bonusOptions = [randomWord, ...wrongOptions].slice(0, 3);
+            
+            // Shuffle options
+            for (let i = bonusOptions.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [bonusOptions[i], bonusOptions[j]] = [bonusOptions[j], bonusOptions[i]];
+            }
+            
+            const correctIndex = bonusOptions.indexOf(randomWord);
+            const optionsContainer = document.getElementById('bonusOptions');
+            optionsContainer.innerHTML = '';
+            
+            // Speak the word
+            const utterance = new SpeechSynthesisUtterance(randomWord);
+            utterance.rate = 0.8;
+            speechSynthesis.speak(utterance);
+            
+            const startTime = Date.now();
+            
+            bonusOptions.forEach((option, idx) => {
+                const btn = document.createElement('button');
+                btn.textContent = option;
+                btn.style.padding = '15px';
+                btn.style.fontSize = '1em';
+                btn.style.background = 'white';
+                btn.style.color = '#000000';
+                btn.style.border = 'none';
+                btn.style.borderRadius = '10px';
+                btn.style.cursor = 'pointer';
+                btn.style.fontWeight = 'bold';
+                btn.onclick = () => {
+                    const endTime = Date.now();
+                    const timeElapsed = (endTime - startTime) / 1000;
+                    const resultEl = document.getElementById('bonusResult');
+                    
+                    if (idx === correctIndex) {
+                        resultEl.style.color = '#000000';
+                        resultEl.textContent = `⚽ LIGHTNING GOAL! ${timeElapsed.toFixed(1)}s! 🚀`;
+                    } else {
+                        resultEl.style.color = '#666';
+                        resultEl.textContent = '❌ Try again next time!';
+                    }
+                };
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function closeBonusGame() {
+            const bonusGame = document.getElementById('bonusGame');
+            if (bonusGame) bonusGame.remove();
+            document.getElementById('mainMenu').style.display = 'block';
+        }
+
+        // CELEBRATION
+        function celebrateSuccess() {
+            const emojis = ['🎉', '⭐', '🌟', '✨', '🎊', '👏', '🏆', '🎯'];
+            const emojiRain = document.getElementById('emojiRain');
+            for (let i = 0; i < 5; i++) {
+                const emoji = document.createElement('div');
+                emoji.className = 'emoji';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.left = Math.random() * 100 + '%';
+                emoji.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                emojiRain.appendChild(emoji);
+                setTimeout(() => emoji.remove(), 3000);
+            }
+        }
+
+        // STATS
+        function showStats() {
+            const statsDiv = document.getElementById('statsDiv');
+            const finalStats = document.getElementById('finalStats');
+            
+            let message = '';
+            if (currentGame === 'flashcards') {
+                message = `You got ${flashcardScore.correct} goals out of ${words.length}!`;
+            } else if (currentGame === 'multiplechoice') {
+                message = `Scored ${mcScore.correct} goals out of ${words.length}!`;
+            } else {
+                message = `You completed the ${currentGame} game!`;
+            }
+
+            finalStats.textContent = message;
+            
+            document.querySelectorAll('.game-area').forEach(el => el.classList.remove('active'));
+            document.getElementById('mainMenu').style.display = 'none';
+            statsDiv.style.display = 'block';
+            
+            celebrateSuccess();
+            celebrateSuccess();
+        }
+    </script>
+</body>
+</html>

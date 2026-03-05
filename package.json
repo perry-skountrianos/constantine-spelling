@@ -1,0 +1,24 @@
+{
+  "name": "constantine-spelling",
+  "version": "1.0.0",
+  "description": "Password-protected spelling practice game for Constantine",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "spelling",
+    "education",
+    "dyslexia",
+    "game"
+  ],
+  "author": "Constantine's Parent",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
